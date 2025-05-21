@@ -1,112 +1,160 @@
 # Gerenciamento de Salas
 
 Este projeto é uma API para gerenciamento de laboratórios, permite o cadastro de usuários, criação de laboratórios com fotos, geração de relatórios em PDF e autenticação com JWT.
- ```
-https://gerenciar-salas-five.vercel.app/
- ```
-## Funcionalidades
 
-- **Autenticação de Usuário:**
-  - Registro e login de usuários com autenticação JWT.
-- **Gerenciamento de Laboratórios:**
-  - Criação de laboratórios com ou sem foto.
-  - Listagem de laboratórios.
-  - Geração de relatórios em PDF, acessível apenas em dias úteis.
+<h2>Link da Aplicação</h2>
+<a href="https://gerenciar-salas-five.vercel.app/">https://gerenciar-salas-five.vercel.app/</a>
 
-## Tecnologias Utilizadas
+<h2>Funcionalidades</h2>
 
-- Node.js
-- Express
-- MongoDB
-- JWT para autenticação
-- Multer para upload de arquivos
-- PDFKit para geração de PDFs
+<ul>
+    <li><strong>Autenticação de Usuário:</strong>
+        <ul>
+            <li>Registro e login de usuários com autenticação JWT.</li>
+        </ul>
+    </li>
+    <li><strong>Gerenciamento de Laboratórios:</strong>
+        <ul>
+            <li>Criação de laboratórios com ou sem foto.</li>
+            <li>Listagem de laboratórios.</li>
+            <li>Geração de relatórios em PDF, acessível apenas em dias úteis.</li>
+        </ul>
+    </li>
+</ul>
 
-## Configuração do Ambiente
+<h2>Tecnologias Utilizadas</h2>
 
-1. **Clone o Repositório:**
-   ```bash
-   git clone https://github.com/franclindo/gerenciamento-salas.git
-   cd gerenciamento-salas
-   ```
+<ul>
+    <li>Node.js</li>
+    <li>Express</li>
+    <li>MongoDB</li>
+    <li>JWT para autenticação</li>
+    <li>Multer para upload de arquivos</li>
+    <li>PDFKit para geração de PDFs</li>
+</ul>
 
-2. **Instale as Dependências:**
-   ```bash
-   npm install
-   ```
+<h2>Configuração do Ambiente</h2>
 
-3. **Configuração do Banco de Dados:**
-   - Configure o MongoDB e adicione a URI de conexão no arquivo `.env`.
+<h3>1. Clone o Repositório:</h3>
+<pre><code>git clone https://github.com/franclindo/gerenciamento-salas.git
+cd gerenciamento-salas</code></pre>
 
-4. **Variáveis de Ambiente:**
-   - Crie um arquivo `.env` na raiz do projeto e adicione as seguintes variáveis:
-     ```
-     MONGO_URI=seu_mongo_uri
-     JWT_SECRET=seu_jwt_secret
-     PORT=5000
-     ```
+<h3>2. Instale as Dependências:</h3>
+<pre><code>npm install</code></pre>
 
-## Configuração do Arquivo .env
+<h3>3. Configuração do Banco de Dados:</h3>
+<ul>
+    <li>Configure o MongoDB e adicione a URI de conexão no arquivo <code>.env</code>.</li>
+</ul>
 
-Para que a aplicação funcione corretamente, é necessário configurar um arquivo `.env` na raiz do projeto com as seguintes variáveis de ambiente:
+<h3>4. Variáveis de Ambiente:</h3>
+<ul>
+    <li>Crie um arquivo <code>.env</code> na raiz do projeto e adicione as seguintes variáveis:</li>
+</ul>
+<pre><code>MONGO_URI=seu_mongo_uri
+JWT_SECRET=seu_jwt_secret
+PORT=5000</code></pre>
 
-- **MONGO_URI**: A URI de conexão para o seu banco de dados MongoDB.
-  - Exemplo: `MONGO_URI=mongodb://usuario:senha@host:porta/nome_do_banco`
+<h2>Configuração do Arquivo .env</h2>
 
-- **JWT_SECRET**: Uma chave secreta usada para assinar os tokens JWT.
-  - Exemplo: `JWT_SECRET=sua_chave_secreta`
+<p>Para que a aplicação funcione corretamente, é necessário configurar um arquivo <code>.env</code> na raiz do projeto com as seguintes variáveis de ambiente:</p>
 
-- **PORT**: A porta em que o servidor irá rodar.
-  - Exemplo: `PORT=5000`
+<ul>
+    <li><strong>MONGO_URI:</strong> A URI de conexão para o seu banco de dados MongoDB.
+        <ul>
+            <li>Exemplo: <code>MONGO_URI=mongodb://usuario:senha@host:porta/nome_do_banco</code></li>
+        </ul>
+    </li>
+    <li><strong>JWT_SECRET:</strong> Uma chave secreta usada para assinar os tokens JWT.
+        <ul>
+            <li>Exemplo: <code>JWT_SECRET=sua_chave_secreta</code></li>
+        </ul>
+    </li>
+    <li><strong>PORT:</strong> A porta em que o servidor irá rodar.
+        <ul>
+            <li>Exemplo: <code>PORT=5000</code></li>
+        </ul>
+    </li>
+</ul>
 
-Certifique-se de que o arquivo `.env` está incluído no `.gitignore` para evitar que informações sensíveis sejam expostas no controle de versão.
+<h2>Executando o Projeto</h2>
 
-## Executando o Projeto
+<h3>Modo de Desenvolvimento:</h3>
+<pre><code>npm run dev</code></pre>
 
-- **Modo de Desenvolvimento:**
-  ```bash
-  npm run dev
-  ```
+<h3>Modo de Produção:</h3>
+<pre><code>npm start</code></pre>
 
-- **Modo de Produção:**
-  ```bash
-  npm start
-  ```
+<h2>Testes</h2>
 
-## Testes
+<p>Execute os testes com o Jest:</p>
+<pre><code>npm test</code></pre>
 
-- Execute os testes com o Jest:
-  ```bash
-  npm test
-  ```
+<h2>Rotas da API</h2>
 
-## Rotas da API
+<table>
+    <thead>
+        <tr>
+            <th>Endpoint</th>
+            <th>Descrição</th>
+            <th>Retorno</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>http://localhost:5000/api/usuario/register</td>
+            <td>Registra um novo usuário, resposta em Json, com array de objetos</td>
+            <td>
+                <pre><code>{
+    "email": "seuemail@gmail",
+    "password": "senha123"
+}</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>http://localhost:5000/api/usuario/login</td>
+            <td>Autentica um usuário existente e retorna um token JWT</td>
+            <td>
+                <pre><code>{
+    "email": "usuario@example.com",
+    "password": "senha"
+}</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>http://localhost:5000/api/laboratorio</td>
+            <td>Lista todos os laboratórios cadastrados</td>
+            <td>
+                <pre><code>
+    {
+        "nome": "Laboratório 1",
+        "descricao": "Descrição do laboratório",
+        "capacidade": 20
+    }
+</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>http://localhost:5000/api/laboratorio/novo</td>
+            <td>Cria um novo laboratório (requer autenticação)</td>
+            <td>
+                <pre><code>{
+    "nome": "Nome do Laboratório",
+    "descricao": "Descrição",
+    "capacidade": 20
+}</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>http://localhost:5000/api/laboratorio/relatorio</td>
+            <td>Gera um relatório em PDF dos laboratórios (requer autenticação e só está acessível em dias úteis)</td>
+            <td>
+                <pre><code>PDF file</code></pre>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-### Autenticação de Usuário
+<h2>Contribuição</h2>
 
-- **POST /api/usuario/register**
-  - Registra um novo usuário.
-  - Corpo da requisição: `{ "email": "usuario@example.com", "password": "senha" }`
-
-- **POST /api/usuario/login**
-  - Autentica um usuário existente e retorna um token JWT.
-  - Corpo da requisição: `{ "email": "usuario@example.com", "password": "senha" }`
-
-### Gerenciamento de Laboratórios
-
-- **GET /api/laboratorio**
-  - Lista todos os laboratórios cadastrados.
-
-- **POST /api/laboratorio/novo**
-  - Cria um novo laboratório.
-  - Requer autenticação (token JWT).
-  - Corpo da requisição: `{ "nome": "Nome do Laboratório", "descricao": "Descrição", "capacidade": 20 }`
-  - Suporta upload de foto como multipart/form-data.
-
-- **GET /api/laboratorio/relatorio**
-  - Gera um relatório em PDF dos laboratórios.
-  - Requer autenticação (token JWT) e só está acessível em dias úteis.
-
-## Contribuição
-
-Sinta-se à vontade para contribuir com o projeto através de pull requests.
+<p>Sinta-se à vontade para contribuir com o projeto através de pull requests.</p>
