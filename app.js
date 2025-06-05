@@ -4,11 +4,13 @@ const dotenv = require("dotenv");
 
 const labRoutes = require("./routes/labRoutes");
 const authRoutes = require("./routes/authRoutes");
+const videoTutorialRoutes = require("./routes/videoTutorialRoutes");
 
 dotenv.config();
 const app = express();
 
 app.use(express.json());
+app.use(express.static('public'));
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB conectado"))
@@ -17,6 +19,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 app.use("/api/laboratorio", labRoutes);
 app.use("/api/usuario", authRoutes);
+app.use("/api", videoTutorialRoutes);
 
 app.get('/', (req, res) => {
     res.send('Bem-vindo ao servidor!');
