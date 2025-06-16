@@ -4,7 +4,7 @@ const fs = require('fs');
 const router = express.Router();
 const io = require('socket.io')(require('http').createServer());
 
-const videoPath = path.join(__dirname, '../public/video-tutorial.mp4');
+const videoPath = path.join(__dirname, '../public/tutorial.mp4');
 
 
 router.get('/videoTutorial', (req, res) => {
@@ -14,7 +14,12 @@ router.get('/videoTutorial', (req, res) => {
         }
         const range = req.headers.range;
         if (!range) {
-            return res.status(416).send('Range header required');
+            res.writeHead(200, {
+                'Content-Length': stats.size,
+                'Content-Type': 'video/mp4',
+            });
+            fs.createReadStream(videoPath).pipe(res);
+            return;
         }
         const videoSize = stats.size;
         const CHUNK_SIZE = 10 ** 6; // 1MB
@@ -39,8 +44,5 @@ router.post('/bloquear/:lab', (req, res) => {
     res.status(200).send(`Evento emitido para o canal bloquear(${lab})`);
 });
 
-router.get('/temperaturaAtual', (req, res) => {
-    res.json({ temperatura: temperaturaAtual.toFixed(2) });
-});
 
 module.exports = router; 
