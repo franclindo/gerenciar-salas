@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor de Bloqueio de Laboratórios</title>
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #messages {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Monitor de Bloqueio de Laboratórios</h1>
+    <div id="temperatura"></div>
+    <div id="messages"></div>
+
+    <script>
+        const socket = io();
+        const messagesDiv = document.getElementById('messages');
+
+        socket.on('bloquear', (data) => {
+            const message = document.createElement('p');
+            message.textContent = data.message;
+            messagesDiv.appendChild(message);
+        });
+
+        function fetchTemperatura() {
+            fetch('/api/temperaturaAtual')
+                .then(response => response.json())
+                .then(data => {
+                    const temperaturaElement = document.getElementById('temperatura');
+                    temperaturaElement.textContent = `Temperatura atual: ${data.temperatura}°C`;
+                })
+                .catch(error => console.error('Erro ao buscar temperatura:', error));
+        }
+
+        
+        setInterval(fetchTemperatura, 5000);
+        fetchTemperatura(); 
+    </script>
+</body>
+
+</html>
