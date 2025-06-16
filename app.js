@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const labRoutes = require("./routes/labRoutes");
 const authRoutes = require("./routes/authRoutes");
 const videoTutorialRoutes = require("./routes/videoTutorialRoutes");
+const temperaturaRoutes = require("./routes/temperaturaRoutes");
 
 dotenv.config();
 const app = express();
@@ -16,10 +17,10 @@ mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB conectado"))
     .catch(err => console.error("Erro ao conectar no Mongo:", err));
 
-
-app.use("/api/laboratorio", labRoutes);
-app.use("/api/usuario", authRoutes);
-app.use("/api", videoTutorialRoutes);
+app.use("/laboratorio", labRoutes);
+app.use("/usuario", authRoutes);
+app.use("/", videoTutorialRoutes);
+app.use("/", temperaturaRoutes);
 
 app.get('/', (req, res) => {
     res.send('Bem-vindo ao servidor!');

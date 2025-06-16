@@ -4,61 +4,80 @@ const cors = require('cors');
 
 router.use(cors({
   origin: '*',
-  methods: ['GET']
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type']
 }));
 
-const historicoTemperaturas = [];
+router.use(express.json());
+
+let temperaturaAtual = 0;
+let historicoTemperaturas = [];
 const MAX_HISTORICO = 100;
 
-router.get('/temperaturaAtual', (req, res) => {
+function adicionarAoHistorico(temperatura) {
+  const registro = {
+    temperatura: temperatura,
+    timestamp: new Date().toISOString()
+  };
+
+  historicoTemperaturas.unshift(registro);
+
+  if (historicoTemperaturas.length > MAX_HISTORICO) {
+    historicoTemperaturas.pop();
+  }
+}
+
+// Removido o prefixo /api/
+router.post('/atualizarTemperatura', (req, res) => {
   try {
-    const { temp } = req.query;
-    
-    if (temp !== undefined) {
-      const temperatura = parseFloat(temp);
-      
-      if (isNaN(temperatura)) {
-        return res.status(400).json({
-          status: 'error',
-          message: 'Valor de temperatura inválido'
-        });
+    if (req.body && typeof req.body.temperatura !== 'undefined') {
+      const novaTemperatura = parseFloat(req.body.temperatura);
+
+      if (isNaN(novaTemperatura)) {
+        throw new Error('Temperatura inválida');
       }
 
-      historicoTemperaturas.push({
-        temperatura,
+      temperaturaAtual = novaTemperatura;
+      adicionarAoHistorico(temperaturaAtual);
+
+      console.log(`Temperatura atualizada: ${temperaturaAtual}°C`);
+
+      res.status(200).json({
+        status: 'success',
+        message: 'Dados recebidos com sucesso',
+        temperatura: temperaturaAtual,
         timestamp: new Date().toISOString()
       });
-
-      if (historicoTemperaturas.length > MAX_HISTORICO) {
-        historicoTemperaturas.shift();
-      }
-
-      console.log(`Temperatura atualizada: ${temperatura.toFixed(2)}°C`);
-      
-      return res.json({ 
-        status: 'success',
-        temperatura: temperatura.toFixed(2),
-        timestamp: historicoTemperaturas[historicoTemperaturas.length - 1].timestamp
+    } else {
+      res.status(400).json({
+        status: 'error',
+        message: 'Dados inválidos'
       });
     }
-    
-    const ultimaLeitura = historicoTemperaturas.length > 0 
-      ? historicoTemperaturas[historicoTemperaturas.length - 1]
-      : null;
-    
-    res.json({
-      status: ultimaLeitura ? 'success' : 'no-data',
-      temperatura: ultimaLeitura ? ultimaLeitura.temperatura.toFixed(2) : null,
-      timestamp: ultimaLeitura ? ultimaLeitura.timestamp : null
-    });
-
   } catch (error) {
-    console.error('Erro no endpoint /temperaturaAtual:', error);
+    console.error('Erro ao atualizar temperatura:', error);
     res.status(500).json({
       status: 'error',
-      message: 'Erro interno no servidor'
+      message: 'Erro interno no servidor',
+      error: error.message
     });
   }
+});
+
+// Removido o prefixo /api/
+router.get('/temperaturaAtual', (req, res) => {
+  res.status(200).json({
+    temperatura: temperaturaAtual.toFixed(2),
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Removido o prefixo /api/
+router.get('/historicoTemperaturas', (req, res) => {
+  res.status(200).json({
+    historico: historicoTemperaturas,
+    totalRegistros: historicoTemperaturas.length
+  });
 });
 
 module.exports = router;
