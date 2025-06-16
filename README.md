@@ -1,6 +1,6 @@
 # Gerenciamento de Salas
 
-Este projeto é uma API para gerenciamento de laboratórios, permite o cadastro de usuários, criação de laboratórios com fotos, geração de relatórios em PDF e autenticação com JWT.
+Este projeto é uma API para gerenciamento de laboratórios, permite o cadastro de usuários, criação de laboratórios com fotos, geração de relatórios em PDF, autenticação com JWT e monitoramento de temperatura em tempo real.
 
 <h2>Link da Aplicação</h2>
 <a href="https://gerenciar-salas-five.vercel.app/">https://gerenciar-salas-five.vercel.app/</a>
@@ -20,6 +20,19 @@ Este projeto é uma API para gerenciamento de laboratórios, permite o cadastro 
             <li>Geração de relatórios em PDF, acessível apenas em dias úteis.</li>
         </ul>
     </li>
+    <li><strong>Monitoramento de Temperatura:</strong>
+        <ul>
+            <li>Monitoramento em tempo real da temperatura dos laboratórios.</li>
+            <li>Histórico de temperaturas.</li>
+            <li>Atualização automática via sensores.</li>
+        </ul>
+    </li>
+    <li><strong>Vídeo Tutorial:</strong>
+        <ul>
+            <li>Streaming de vídeo tutorial.</li>
+            <li>Controle de acesso aos laboratórios.</li>
+        </ul>
+    </li>
 </ul>
 
 <h2>Tecnologias Utilizadas</h2>
@@ -31,6 +44,7 @@ Este projeto é uma API para gerenciamento de laboratórios, permite o cadastro 
     <li>JWT para autenticação</li>
     <li>Multer para upload de arquivos</li>
     <li>PDFKit para geração de PDFs</li>
+    <li>Socket.IO para comunicação em tempo real</li>
 </ul>
 
 <h2>Configuração do Ambiente</h2>
@@ -102,8 +116,8 @@ PORT=5000</code></pre>
     </thead>
     <tbody>
         <tr>
-            <td>http://localhost:5000/api/usuario/register</td>
-            <td>Registra um novo usuário, resposta em Json, com array de objetos</td>
+            <td>http://localhost:5000/usuario/register</td>
+            <td>Registra um novo usuário</td>
             <td>
                 <pre><code>{
     "email": "seuemail@gmail",
@@ -112,7 +126,7 @@ PORT=5000</code></pre>
             </td>
         </tr>
         <tr>
-            <td>http://localhost:5000/api/usuario/login</td>
+            <td>http://localhost:5000/usuario/login</td>
             <td>Autentica um usuário existente e retorna um token JWT</td>
             <td>
                 <pre><code>{
@@ -122,20 +136,18 @@ PORT=5000</code></pre>
             </td>
         </tr>
         <tr>
-            <td>http://localhost:5000/api/laboratorio</td>
+            <td>http://localhost:5000/laboratorio</td>
             <td>Lista todos os laboratórios cadastrados</td>
             <td>
-                <pre><code>
-    {
-        "nome": "Laboratório 1",
-        "descricao": "Descrição do laboratório",
-        "capacidade": 20
-    }
-</code></pre>
+                <pre><code>{
+    "nome": "Laboratório 1",
+    "descricao": "Descrição do laboratório",
+    "capacidade": 20
+}</code></pre>
             </td>
         </tr>
         <tr>
-            <td>http://localhost:5000/api/laboratorio/novo</td>
+            <td>http://localhost:5000/laboratorio/novo</td>
             <td>Cria um novo laboratório (requer autenticação)</td>
             <td>
                 <pre><code>{
@@ -146,10 +158,60 @@ PORT=5000</code></pre>
             </td>
         </tr>
         <tr>
-            <td>http://localhost:5000/api/laboratorio/relatorio</td>
+            <td>http://localhost:5000/laboratorio/relatorio</td>
             <td>Gera um relatório em PDF dos laboratórios (requer autenticação e só está acessível em dias úteis)</td>
             <td>
                 <pre><code>PDF file</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>http://localhost:5000/temperaturaAtual</td>
+            <td>Retorna a temperatura atual do laboratório</td>
+            <td>
+                <pre><code>{
+    "temperatura": "25.50",
+    "timestamp": "2024-03-21T10:30:00.000Z"
+}</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>http://localhost:5000/atualizarTemperatura</td>
+            <td>Atualiza a temperatura do laboratório (POST)</td>
+            <td>
+                <pre><code>{
+    "temperatura": 25.5
+}</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>http://localhost:5000/historicoTemperaturas</td>
+            <td>Retorna o histórico de temperaturas</td>
+            <td>
+                <pre><code>{
+    "historico": [
+        {
+            "temperatura": 25.5,
+            "timestamp": "2024-03-21T10:30:00.000Z"
+        }
+    ],
+    "totalRegistros": 1
+}</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>http://localhost:5000/videoTutorial</td>
+            <td>Streaming do vídeo tutorial</td>
+            <td>
+                <pre><code>Video stream</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>http://localhost:5000/bloquear/:lab</td>
+            <td>Bloqueia um laboratório específico (POST)</td>
+            <td>
+                <pre><code>{
+    "message": "Laboratório foi bloqueado!"
+}</code></pre>
             </td>
         </tr>
     </tbody>
